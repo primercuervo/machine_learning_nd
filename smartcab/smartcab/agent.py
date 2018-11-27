@@ -89,8 +89,12 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-        maxQ = max(self.Q[state], key=self.Q[state].get)
-        return maxQ
+        action_list=[]
+        maxQ = max(self.Q[state].values())
+        for key, value in self.Q[state].iteritems():
+            if value == maxQ:
+                action_list.append(key)
+        return action_list
 
 
     def createQ(self, state):
@@ -125,10 +129,9 @@ class LearningAgent(Agent):
         # Otherwise, choose an action with the highest Q-value for the current state
         # Be sure that when choosing an action with highest Q-value that you randomly select between actions that "tie".
         if not self.learning or random.random() <= self.epsilon:
-        # if not self.learning:
             action = random.choice(self.valid_actions)
         else:
-            action = self.get_maxQ(self.state)
+            action = random.choice(self.get_maxQ(self.state))
         return action
 
 
